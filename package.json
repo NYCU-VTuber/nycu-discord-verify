@@ -1,19 +1,32 @@
 {
-  "name": "api",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "discord.js": "^12.5.3",
-    "dotenv": "^10.0.0",
-    "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "session-file-store": "^1.5.0"
-  }
+    "name": "nycu-discord-verify",
+    "version": "1.0.0",
+    "description": "NYCU Discord Verify Bot",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "nodestart": "node .",
+        "start": "forever forever.json",
+        "daemon": "forever start forever.json",
+        "stop": "forever stopall",
+        "stopall": "forever stopall",
+        "restart": "forever restart forever.json",
+        "fp": "forever list",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "Edison Lee <edisonlee@edisonlee55.com>",
+    "license": "MIT",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "compression": "^1.7.4",
+        "discord.js": "^12.5.3",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "express-session": "^1.17.2",
+        "forever": "^3.0.4",
+        "helmet": "^4.6.0",
+        "node-fetch": "^2.6.1",
+        "session-file-store": "^1.5.0",
+        "simple-oauth2": "^4.2.0"
+    }
 }

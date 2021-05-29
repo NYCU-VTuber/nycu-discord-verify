@@ -1,0 +1,19 @@
+
+[
+    {
+        "uid": "nycu_api",
+        "append": true,
+        "watch": false,
+        "script": "./nycu-api/nycu_api.js",
+        "sourceDir": "",
+        "workingDir": "./nycu-api"
+    },
+    {
+        "uid": "discord_api",
+        "append": true,
+        "watch": false,
+        "script": "./discord-api/discord_api.js",
+        "sourceDir": "",
+        "workingDir": "./discord-api"
+    }
+]
