@@ -17,7 +17,9 @@ const dbPath = process.env.DATABASE || "db.json";
 
 const discordApiBaseUrl = process.env.DISCORD_API_BASE_URL || "https://discord.com/api";
 const discordApiClientId = process.env.DISCORD_API_CLIENT_ID;
-const discordRedirectUri = process.env.DISCORD_API_REDIRECT_URI;
+const discordRedirectUri = process.env.SERVER_URL_DISCORD_API + "/register";
+
+const routerPath = process.env.DISCORD_API_PATH || "/";
 
 db.load(dbPath);
 
@@ -26,11 +28,13 @@ import express from 'express';
 import helmet from "helmet";
 import compression from "compression";
 const app = express();
+const router = express.Router();
+
 app.use(helmet());
 app.use(compression());
 
-import { Client } from 'discord.js';
-const client = new Client();
+import { Client, Intents } from 'discord.js';
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 client.login(process.env.DISCORD_BOT_TOKEN);
 
 import session from 'express-session';
@@ -53,11 +57,11 @@ if (!isDebug) {
 
 app.use(session(sessionConfig));
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.redirect(`${discordApiBaseUrl}/oauth2/authorize?client_id=${discordApiClientId}&redirect_uri=${discordRedirectUri}&response_type=code&scope=identify`);
 });
 
-app.get("/register", (req, res) => {
+router.get("/register", (req, res) => {
     const discordCode = req.query.code;
     if (!discordCode) {
         return res.status(400).json({ error: "400 Bad Request" });
@@ -68,7 +72,7 @@ app.get("/register", (req, res) => {
     res.redirect(process.env.SERVER_URL_NYCU_API);
 });
 
-app.get("/verify", async (req, res) => {
+router.get("/verify", async (req, res) => {
     try {
         const discordCode = req.session.discordCode;
         const nycuCode = req.session.nycuCode;
@@ -142,7 +146,7 @@ app.get("/verify", async (req, res) => {
     }
 });
 
-app.get('/OAuth', async (req, res) => {
+router.get('/OAuth', async (req, res) => {
     try {
         const code = req.query.token;
         if (!code) {
@@ -152,11 +156,13 @@ app.get('/OAuth', async (req, res) => {
         req.session.nycuCode = code;
         debug(`/OAuth nycuCode: ${code}`);
 
-        res.redirect("/verify");
+        res.redirect(process.env.SERVER_URL_DISCORD_API + "/verify");
     } catch (e) {
         return res.status(500).json({ error: "500 Internal Server Error" });
     }
 });
+
+app.use(routerPath, router);
 
 app.listen(port, () => {
     console.log('\x1b[36m%s\x1b[0m%s', '[Discord] ', `NYCU Discord Verify (${version}) by edisonlee55 & Cute Leko`);

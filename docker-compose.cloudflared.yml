@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  app:
+    build: .
+    volumes:
+      - ./data/db.json:/app/discord-api/db.json
+    env_file:
+      - .env
+    restart: always
+    depends_on:
+      - cloudflared
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: 'tunnel --no-autoupdate run --token TOKEN'
+    user: root
+    restart: unless-stopped

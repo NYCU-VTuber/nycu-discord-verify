@@ -109,3 +109,5 @@ json.sqlite
 
 sessions/
 db.json
+
+data/

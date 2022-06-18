@@ -5,6 +5,7 @@ import compression from "compression";
 import { AuthorizationCode } from 'simple-oauth2';
 
 const app = express();
+const router = express.Router();
 app.use(helmet());
 app.use(compression());
 
@@ -15,6 +16,7 @@ const version = process.env.npm_package_version;
 const port = process.env.PORT_NYCU_API || 8081;
 const scope = "profile name status";
 const baseURL = process.env.NYCU_API_BASE_URL;
+const routerPath = process.env.NYCU_API_PATH || "/";
 
 const config = {
     client: {
@@ -30,16 +32,16 @@ const config = {
 
 const client = new AuthorizationCode(config);
 
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     const authorizationUri = client.authorizeURL({
-        redirect_uri: process.env.NYCU_API_REDIRECT_URI,
+        redirect_uri: process.env.SERVER_URL_NYCU_API + "/oauth/",
         scope: scope
     });
 
     res.redirect(authorizationUri);
 });
 
-app.get('/oauth', (req, res) => {
+router.get('/oauth', (req, res) => {
     let code = req.query.code;
     if (!code) {
         res.status(400);
@@ -59,7 +61,7 @@ app.get('/oauth', (req, res) => {
 let getOAuthAccessToken = async (code) => {
     const tokenParams = {
         code: code,
-        redirect_uri: process.env.NYCU_API_REDIRECT_URI
+        redirect_uri: process.env.SERVER_URL_NYCU_API + "/oauth/"
     };
     try {
         const accessToken = await client.getToken(tokenParams);
@@ -81,6 +83,8 @@ let revokeOAuthAccessToken = async (accessToken) => {
     }
 }
 */
+
+app.use(routerPath, router);
 
 app.listen(port, () => {
     console.log('\x1b[35m%s\x1b[0m\x1b[0m%s', '[Server] ', `NYCU Discord Verify (${version}) by edisonlee55 & Cute Leko`);
