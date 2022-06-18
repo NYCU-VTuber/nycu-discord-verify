@@ -16,6 +16,8 @@ Add your bot into server using `https://discord.com/oauth2/authorize?client_id=<
 - env:
     - NYCU_API_PATH=/nycu
     - DISCORD_API_PATH=/discord
+    - SERVER_URL_NYCU_API=https://nycu-discord-verify.bot/nycu
+    - SERVER_URL_DISCORD_API=https://nycu-discord-verify.bot/discord
 - Discord
     - Redirect URI: https://nycu-discord-verify.bot/discord/register
 - NYCU OAuth
