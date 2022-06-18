@@ -1,8 +1,4 @@
 'use strict';
-import dotenv from "dotenv";
-dotenv.config({ path: '../.env' });
-import fs from "fs";
-import https from "https";
 import express from "express";
 import helmet from "helmet";
 import compression from "compression";
@@ -16,14 +12,9 @@ if (process.env.NODE_ENV == "production")
     app.set('trust proxy', 1);
 
 const version = process.env.npm_package_version;
-const port = process.env.PORT_NYCU_API || 8443;
+const port = process.env.PORT_NYCU_API || 8081;
 const scope = "profile name status";
 const baseURL = process.env.NYCU_API_BASE_URL;
-
-const sslConfig = {
-    key: fs.readFileSync(process.env.SSL_KEY_PATH || '../ssl/cert_key.pem'),
-    cert: fs.readFileSync(process.env.SSL_CERT_PATH || '../ssl/cert.pem'),
-};
 
 const config = {
     client: {
@@ -91,7 +82,7 @@ let revokeOAuthAccessToken = async (accessToken) => {
 }
 */
 
-https.createServer(sslConfig, app).listen(port, () => {
+app.listen(port, () => {
     console.log('\x1b[35m%s\x1b[0m\x1b[0m%s', '[Server] ', `NYCU Discord Verify (${version}) by edisonlee55 & Cute Leko`);
     console.log('\x1b[35m%s\x1b[0m\x1b[0m%s', '[Server] ', `Listening on port ${port}`);
     console.log("\n-----\n");

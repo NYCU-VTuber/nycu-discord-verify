@@ -1,6 +1,4 @@
 'use strict';
-import dotenv from "dotenv";
-dotenv.config({ path: '../.env' });
 
 const isDebug = process.env.NODE_ENV != "production";
 let debug = (x) => {
@@ -9,16 +7,11 @@ let debug = (x) => {
     }
 }
 
-import fs from "fs";
-import db from "./db.js";
+import db from "./db.mjs";
 
 const version = process.env.npm_package_version;
-const port = parseInt(process.env.PORT_DISCORD_API) || 443;
+const port = parseInt(process.env.PORT_DISCORD_API) || 8080;
 const sessionSecret = process.env.SESSION_SECRET || "LEKO_SO_CUTE_AYY";
-const sslConfig = {
-    key: fs.readFileSync(process.env.SSL_KEY_PATH || '../ssl/cert_key.pem'),
-    cert: fs.readFileSync(process.env.SSL_CERT_PATH || '../ssl/cert.pem'),
-};
 
 const dbPath = process.env.DATABASE || "db.json";
 
@@ -29,7 +22,6 @@ const discordRedirectUri = process.env.DISCORD_API_REDIRECT_URI;
 db.load(dbPath);
 
 import axios from "axios";
-import https from "https";
 import express from 'express';
 import helmet from "helmet";
 import compression from "compression";
@@ -166,7 +158,7 @@ app.get('/OAuth', async (req, res) => {
     }
 });
 
-https.createServer(sslConfig, app).listen(port, () => {
+app.listen(port, () => {
     console.log('\x1b[36m%s\x1b[0m%s', '[Discord] ', `NYCU Discord Verify (${version}) by edisonlee55 & Cute Leko`);
     console.log('\x1b[36m%s\x1b[0m%s', '[Discord] ', `Listening on port ${port}`);
 });

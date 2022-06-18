@@ -4,7 +4,7 @@
         "uid": "nycu_api",
         "append": true,
         "watch": false,
-        "script": "./nycu-api/nycu_api.js",
+        "script": "./nycu-api/nycu_api.mjs",
         "sourceDir": "",
         "workingDir": "./nycu-api"
     },
@@ -12,7 +12,7 @@
         "uid": "discord_api",
         "append": true,
         "watch": false,
-        "script": "./discord-api/discord_api.js",
+        "script": "./discord-api/discord_api.mjs",
         "sourceDir": "",
         "workingDir": "./discord-api"
     }
