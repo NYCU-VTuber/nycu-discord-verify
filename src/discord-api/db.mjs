@@ -1,25 +1,31 @@
 'use strict';
+import { Mutex } from 'async-mutex';
 import { existsSync, readFileSync, writeFileSync } from "fs";
 
+const mutex = new Mutex();
 let data = {};
 
-let load = (path) => {
+function load(path){
     if (existsSync(path)) {
         const raw = readFileSync(path);
         data = JSON.parse(raw);
     }
 }
 
-let save = (path) => {
-    writeFileSync(path, JSON.stringify(data));
+async function save(path){
+    await mutex.runExclusive(() => {
+        writeFileSync(path, JSON.stringify(data));
+    });
 }
 
-let isValidNYCUId = (id) => {
+function isValidNYCUId(id){
     return !data.hasOwnProperty(id);
 }
 
-let add = (nycu, discord) => {
-    data[nycu] = discord;
+async function add(nycu, discord){
+    await mutex.runExclusive(() => {
+        data[nycu] = discord;
+    });
 }
 
 export default {

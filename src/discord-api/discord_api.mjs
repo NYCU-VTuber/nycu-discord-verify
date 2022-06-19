@@ -136,8 +136,8 @@ router.get("/verify", async (req, res) => {
 
         // Write to db and save
 
-        db.add(nycuUsername, discordUserId);
-        db.save(dbPath);
+        await db.add(nycuUsername, discordUserId);
+        await db.save(dbPath);
 
         res.status(200).json({ message: "SUCCESS: Discord Account Verified! You may close this page now." });
     } catch (e) {

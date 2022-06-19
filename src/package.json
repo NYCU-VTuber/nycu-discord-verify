@@ -26,6 +26,7 @@
         "helmet": "^5.1.0",
         "node-fetch": "^3.2.6",
         "session-file-store": "^1.5.0",
-        "simple-oauth2": "^4.3.0"
+        "simple-oauth2": "^4.3.0",
+        "async-mutex": "^0.3.2"
     }
 }

@@ -111,3 +111,5 @@ sessions/
 db.json
 
 data/
+
+docker-compose.yml
