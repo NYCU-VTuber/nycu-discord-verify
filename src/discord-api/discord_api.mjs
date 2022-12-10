@@ -158,6 +158,7 @@ router.get('/OAuth', async (req, res) => {
 
         res.redirect(process.env.SERVER_URL_DISCORD_API + "/verify");
     } catch (e) {
+        console.error('\x1b[36m%s\x1b[0m%s', '[OAuth] ', e);
         return res.status(500).json({ error: "500 Internal Server Error" });
     }
 });
