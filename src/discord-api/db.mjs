@@ -18,8 +18,14 @@ async function save(path){
     });
 }
 
-function isValidNYCUId(id){
-    return !data.hasOwnProperty(id);
+function isValid(id, data){
+    if (!data.hasOwnProperty(id)) {
+        return true;
+    }
+    if (data[id] === null || data[id] === data) {
+        return true;
+    }
+    return false;
 }
 
 async function add(nycu, discord){
@@ -31,6 +37,6 @@ async function add(nycu, discord){
 export default {
     load,
     save,
-    isValidNYCUId,
+    isValid,
     add
 }

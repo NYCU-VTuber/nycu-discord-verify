@@ -91,12 +91,6 @@ router.get("/verify", async (req, res) => {
         const nycuUsername = resp.data.username;
         debug(`/verify nycuUsername: ${nycuUsername}`);
 
-        // Check database for duplicated user
-
-        if (!db.isValidNYCUId(nycuUsername)) {
-            return res.status(403).json({ error: "403 Forbidden" });
-        }
-
         // Check Discord, get user id
 
         let response = await axios.post(`${discordApiBaseUrl}/oauth2/token`, new URLSearchParams({
@@ -123,6 +117,12 @@ router.get("/verify", async (req, res) => {
         const discordUserId = response.data.id;
 
         debug(`/verify discordUserId: ${discordUserId}`);
+
+        // Check database for duplicated user
+
+        if (!db.isValid(nycuUsername, discordUserId)) {
+            return res.status(403).json({ error: "403 Forbidden" });
+        }
 
         // Bot add user
 
