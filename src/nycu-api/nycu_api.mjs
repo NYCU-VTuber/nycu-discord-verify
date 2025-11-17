@@ -14,7 +14,7 @@ if (process.env.NODE_ENV == "production")
 
 const version = process.env.npm_package_version;
 const port = process.env.PORT_NYCU_API || 8081;
-const scope = "profile name status";
+const scope = "profile status";
 const baseURL = process.env.NYCU_API_BASE_URL;
 const routerPath = process.env.NYCU_API_PATH || "/";
 
